@@ -1,0 +1,417 @@
+/* ---------------------------------------------------------------------------
+   Complements au theme Constrc : moteur de recherche, barre d'appel mobile,
+   formulaire de devis. Aucune regle du theme n'est modifiee ici, on ajoute.
+   Couleurs reprises du theme : orange #ff5e14, noir #191919.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --lp-orange: #ff5e14;
+  --lp-noir: #191919;
+  --lp-gris: #f3f3f3;
+  --lp-bord: #e2e2e2;
+}
+
+/* Etiquette lue par les lecteurs d'ecran mais pas affichee. Un champ sans
+   etiquette est inutilisable pour une personne malvoyante. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Moteur de recherche ------------------------------------------------- */
+
+.lp-recherche {
+  background: var(--lp-noir);
+  border-radius: 16px;
+  padding: 32px 28px;
+  margin: 0 0 45px;
+  color: #fff;
+}
+
+.lp-recherche_titre {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #fff;
+}
+
+.lp-recherche_sous {
+  font-size: 15px;
+  color: #b9b9b9;
+  margin: 0 0 22px;
+}
+
+.lp-recherche_champs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.lp-recherche select,
+.lp-recherche input[type="search"] {
+  font: inherit;
+  font-size: 16px;               /* < 16px : iOS zoome tout seul au focus */
+  height: 56px;
+  padding: 0 18px;
+  border: 2px solid transparent;
+  border-radius: 40px;
+  background: #fff;
+  color: var(--lp-noir);
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.lp-recherche select {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23191919' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  padding-right: 44px;
+}
+
+.lp-recherche select:focus,
+.lp-recherche input[type="search"]:focus {
+  outline: none;
+  border-color: var(--lp-orange);
+}
+
+.lp-champ-dep { flex: 1 1 210px; }
+.lp-champ-pre { flex: 1 1 240px; }
+.lp-champ-ville { flex: 2 1 260px; position: relative; }
+
+.lp-go {
+  flex: 0 0 auto;
+  height: 56px;
+  padding: 0 34px;
+  border: 0;
+  border-radius: 40px;
+  background: var(--lp-orange);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lp-go:hover { background: #fff; color: var(--lp-noir); }
+
+/* Liste de suggestions */
+.lp-suggestions {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+  overflow: hidden;
+  display: none;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.lp-suggestions.ouverte { display: block; }
+
+.lp-suggestions li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 18px;
+  cursor: pointer;
+  color: var(--lp-noir);
+  border-bottom: 1px solid var(--lp-bord);
+}
+
+.lp-suggestions li:last-child { border-bottom: 0; }
+.lp-suggestions li.actif,
+.lp-suggestions li:hover { background: var(--lp-gris); }
+.lp-suggestions .lp-n { font-weight: 600; }
+.lp-suggestions .lp-cp { color: #7a7a7a; font-size: 14px; white-space: nowrap; }
+.lp-suggestions .lp-vide { cursor: default; color: #7a7a7a; justify-content: flex-start; }
+.lp-suggestions .lp-vide:hover { background: #fff; }
+
+/* Rappel "vous cherchiez X" sur une page departement */
+.lp-rappel {
+  background: #fff4ee;
+  border-left: 4px solid var(--lp-orange);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 0 0 30px;
+}
+
+.lp-rappel strong { color: var(--lp-noir); }
+
+/* --- Barre d'appel fixe (mobile) ----------------------------------------- */
+
+.lp-barre-appel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  display: none;
+  background: var(--lp-noir);
+  box-shadow: 0 -6px 22px rgba(0, 0, 0, .3);
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  gap: 10px;
+}
+
+.lp-barre-appel a {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  height: 52px;
+  border-radius: 40px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.lp-barre-appel .lp-appel { background: var(--lp-orange); color: #fff; }
+.lp-barre-appel .lp-devis { background: #fff; color: var(--lp-noir); }
+.lp-barre-appel svg { width: 19px; height: 19px; flex: 0 0 auto; }
+
+@media (max-width: 991px) {
+  .lp-barre-appel { display: flex; }
+  /* sans cela, la barre masque la fin du pied de page */
+  body { padding-bottom: 78px; }
+}
+
+/* Sur un telephone etroit, "Appeler maintenant" passait sur deux lignes.
+   Un bouton d'appel qui se casse en deux inspire mal confiance. */
+@media (max-width: 430px) {
+  .lp-barre-appel { gap: 8px; padding-left: 8px; padding-right: 8px; }
+  .lp-barre-appel a { font-size: 15px; gap: 7px; white-space: nowrap; }
+  .lp-barre-appel svg { width: 17px; height: 17px; }
+}
+
+@media (max-width: 360px) {
+  .lp-barre-appel a { font-size: 14px; }
+}
+
+/* Numero toujours visible en haut de page */
+.lp-tel-bandeau {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 12px 24px;
+  border-radius: 40px;
+  background: var(--lp-orange);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.lp-tel-bandeau:hover { background: #fff; color: var(--lp-noir); }
+.lp-tel-bandeau svg { width: 20px; height: 20px; }
+
+@media (max-width: 767px) {
+  .lp-tel-bandeau { font-size: 18px; padding: 10px 18px; }
+  .lp-recherche { padding: 24px 18px; }
+  .lp-recherche_titre { font-size: 20px; }
+  .lp-go { width: 100%; }
+}
+
+/* --- Formulaire de devis -------------------------------------------------- */
+
+.lp-devis-form {
+  background: #fff;
+  border: 1px solid var(--lp-bord);
+  border-radius: 16px;
+  padding: 34px 30px;
+}
+
+.lp-grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.lp-grille .lp-pleine { grid-column: 1 / -1; }
+
+@media (max-width: 767px) {
+  .lp-grille { grid-template-columns: 1fr; }
+  .lp-devis-form { padding: 24px 18px; }
+}
+
+.lp-champ label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+  margin: 0 0 7px;
+}
+
+.lp-champ .lp-oblig { color: var(--lp-orange); }
+
+.lp-champ input,
+.lp-champ select,
+.lp-champ textarea {
+  font: inherit;
+  font-size: 16px;
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--lp-bord);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--lp-noir);
+}
+
+.lp-champ textarea { min-height: 130px; resize: vertical; }
+
+.lp-champ input:focus,
+.lp-champ select:focus,
+.lp-champ textarea:focus {
+  outline: none;
+  border-color: var(--lp-orange);
+  box-shadow: 0 0 0 3px rgba(255, 94, 20, .15);
+}
+
+.lp-champ input[aria-invalid="true"],
+.lp-champ select[aria-invalid="true"],
+.lp-champ textarea[aria-invalid="true"] { border-color: #d33; }
+
+.lp-erreur {
+  display: none;
+  color: #d33;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.lp-champ.en-erreur .lp-erreur { display: block; }
+
+/* Zone photos */
+.lp-photos {
+  border: 2px dashed var(--lp-bord);
+  border-radius: 12px;
+  padding: 22px;
+  text-align: center;
+  background: #fafafa;
+}
+
+.lp-photos.survol { border-color: var(--lp-orange); background: #fff4ee; }
+.lp-photos input[type="file"] { display: none; }
+
+.lp-photos_bouton {
+  display: inline-block;
+  padding: 11px 24px;
+  border-radius: 40px;
+  background: var(--lp-noir);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lp-photos_aide { display: block; margin-top: 10px; font-size: 13px; color: #7a7a7a; }
+
+.lp-apercus {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.lp-apercus figure {
+  position: relative;
+  margin: 0;
+  width: 88px;
+  height: 88px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #ddd;
+}
+
+.lp-apercus img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.lp-apercus button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .68);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lp-envoyer {
+  width: 100%;
+  height: 60px;
+  border: 0;
+  border-radius: 40px;
+  background: var(--lp-orange);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lp-envoyer:hover { background: var(--lp-noir); }
+.lp-envoyer[disabled] { opacity: .6; cursor: progress; }
+
+.lp-note {
+  font-size: 13px;
+  color: #7a7a7a;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.lp-message {
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin: 0 0 24px;
+  font-size: 16px;
+}
+
+.lp-message.ok { background: #eaf7ed; border-left: 4px solid #2e9e4f; }
+.lp-message.ko { background: #fdecec; border-left: 4px solid #d33; }
+
+/* le piege a robots : invisible pour l'humain, rempli par les automates */
+.lp-tonneau {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* --- Bandeau de demonstration (uniquement sur la copie de presentation) --- */
+
+.lp-demo-bandeau {
+  background: #191919;
+  color: #fff;
+  text-align: center;
+  padding: 13px 18px;
+  font-size: 15px;
+  line-height: 1.45;
+  position: relative;
+  z-index: 1000;
+}
+
+.lp-demo-bandeau strong { color: var(--lp-orange); }
+
+@media (max-width: 767px) {
+  .lp-demo-bandeau { font-size: 13px; padding: 10px 12px; }
+}
